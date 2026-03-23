@@ -80,7 +80,8 @@ soundManager.onready(function() {
 
     for (var tone = 1; tone < 7; tone++){
       for (i = 0; i < 20; i++){
-        var word = initials[i] + $(e.target).text() + tone;
+        var word = initials[i] + $(e.target).text() + tone; // word is a pronounciation, e.g. yat1
+        // lshk.yale is an object full of sounds
         if (word in lshk.yale) {
           table += '<button data-word="' + word + '">' + lshk.yale[word].length / 2 + '</button>';
         } else {
@@ -101,10 +102,12 @@ soundManager.onready(function() {
     });
     document.getElementById('initials').scrollIntoView();
   });
-  document.getElementById('finals').scrollIntoView();
+  
+  getRandomSoundWord();
+  document.getElementById('homonyms').scrollIntoView();
 });
 
-function getword (word) {
+function getword (word) { // word is a sound, like yat1
   $('#homonyms').html(
     '<button class="up">&#9650;</button>' + 
     '<button id="orange">' + word + '</button><br>' +
@@ -123,8 +126,11 @@ function getword (word) {
 function getid (e) {
   var $el = $(e.target);
   homonyms( $el.data('id') || $el.text()[0] );
+  document.getElementById('contents').scrollIntoView()
 }
 
+
+// lshk.dict contains Chinese characters mapped to their data, has 13051 items
 function homonyms (e) {
   content = $.extend([], lshk.dict[e]);
 
@@ -170,6 +176,21 @@ function homonyms (e) {
   });
   return false;
 }
+
+
+function randomKey (obj) {
+    var keys = Object.keys(obj);
+    return keys[ keys.length * Math.random() << 0];
+  }; 
+
+function getRandomSoundWord() {
+  var randomSoundWord = randomKey(lshk.yale);
+  console.log(randomSoundWord);
+  getword(randomSoundWord);
+}
+
+
+
 
 function createspan (trad, simp, toggle, content){
   var char = toggle ? simp || trad : trad;
