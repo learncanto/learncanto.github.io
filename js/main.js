@@ -42,14 +42,20 @@ soundManager.onready(function() {
     table += '<br>';
   }
   table = table.replace(/<button class="invis"><\/button>/,
-    '<button class="left">&#9664;<\/button>' +
-    '<button class="freq">8<\/button>' +
-    '<button class="right">&#9654;<\/button>');
+    '<button class="simp">义<\/button><br>');
+
+    // '<button class="left">&#9664;<\/button>' +
+    // '<button class="freq">8<\/button>' +
+    // '<button class="right">&#9654;<\/button>');
   table = table.replace(/<button class="invis"><\/button><br>$/,
     '<button id="fill"><\/button>' +
     '<button class="simp">义<\/button><br>'); // 义義
   
   $('#finals').html(table);
+
+  $('#back-to-top').on('click', function(e){
+    document.getElementById('container').scrollIntoView();
+  });
 
   $('#finals button').on('click', function(e){
     var clas = $(e.target).attr('class');
@@ -154,7 +160,7 @@ function homonyms (e) {
         }
         try {var freq = lshk.dict[e][4];}
         catch (error) {console.log(e); freq = 1}
-        if (flag && freq <= $('.freq').text()) {
+        if (flag) { //  && freq <= $('.freq').text()) {
           chars.push(createspan(e, lshk.dict[e][1], toggle, content[0])); 
           return true;
         }
