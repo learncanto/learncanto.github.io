@@ -5,7 +5,7 @@
       sentence = '{0} <span class="c">{1}</span>, {2}; {3}<br>'
 
 soundManager.setup({ waitForWindowLoad: true, debugMode: false });
-var lshk = null, content, contents, chars, toggle = true,
+var lshk = null, content, contents, chars, simpMode = false, // false = traditional, true = simplified
   audio = {}; audio.playlist = [];
 
 function playAudio(idx){
@@ -34,6 +34,14 @@ soundManager.onready(function() {
     document.getElementById('container').scrollIntoView();
   });
 
+  $('#simp-toggle').on('click', function (){
+    simpMode = !simpMode;
+    $('#simp-toggle').text(simpMode ? '义' : '義');
+    displayAllCharacters();
+    var id = $('.k').text(); // refresh the open entry too
+    if (id) characterDetail(id);
+  });
+
   displayAllCharacters();
 });
 
@@ -47,7 +55,7 @@ function displayAllCharacters () {
   $('#characters').html(
     '<button class="up">&#9650;</button><br>' +
     keys.map(function (char) {
-      return createbtn(char, lshk.dict[char][1], toggle);
+      return createbtn(char, lshk.dict[char][1], simpMode);
     }).join('')
   );
 
@@ -75,7 +83,7 @@ function characterDetail (e) {
   $('#contents').html( template.format( ...content )
     .replace(/<IMG SRC="ocrat\/.jpg">/, '')
   );
-  if (toggle) $('.s').css('color', '#9900cc');
+  if (simpMode) $('.s').css('color', '#9900cc');
   if ( lshk.sent_hash[content[0]] ) {
     lshk.sent_hash[content[0]].forEach(function(e){
       contents = $.extend([], lshk.sent_array[e]), chars = []; var flag = true;
@@ -89,7 +97,7 @@ function characterDetail (e) {
         try {var freq = lshk.dict[e][4];}
         catch (error) {console.log(e); freq = 1}
         if (flag) {
-          chars.push(createspan(e, lshk.dict[e][1], toggle, content[0]));
+          chars.push(createspan(e, lshk.dict[e][1], simpMode, content[0])); 
           return true;
         }
         return false;
@@ -111,15 +119,15 @@ function characterDetail (e) {
   return false;
 }
 
-function createspan (trad, simp, toggle, content){
-  var char = toggle ? simp || trad : trad;
+function createspan (trad, simp, simpMode, content){
+  var char = simpMode ? simp || trad : trad;
   var data = char === trad ? '' : ' data-id="' + trad + '"'; // 不承认主义
   var result = content === trad ? char : '<span class="v"' + data + '>' + char + '</span>';
   return result;
 }
 
-function createbtn (trad, simp, toggle){
-  var char = toggle ? simp || trad : trad;
+function createbtn (trad, simp, simpMode){
+  var char = simpMode ? simp || trad : trad;
   var data = char === trad ? '' : ' data-id="' + trad + '"'; // 不承认主义
   return '<button' + data + '>' + char + '</button>';
 }
