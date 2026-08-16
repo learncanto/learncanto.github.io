@@ -36,7 +36,7 @@ soundManager.onready(function() {
 
   $('#simp-toggle').on('click', function (){
     simpMode = !simpMode;
-    $('#simp-toggle').text(simpMode ? '义' : '義');
+    $('#simp-toggle').text(simpMode ? '简' : '繁');
     displayAllCharacters();
     var id = $('.k').text(); // refresh the open entry too
     if (id) characterDetail(id);
