@@ -43,7 +43,33 @@ soundManager.onready(function() {
   });
 
   displayAllCharacters();
+
+  // deep link: open the entry named in the URL anchor, e.g. "#人"
+  var char = hashToChar();
+  if (char) {
+    characterDetail(char);
+    document.getElementById('contents').scrollIntoView();
+  }
 });
+
+// browser back/forward: re-render whatever character the anchor points at
+$(window).on('hashchange', function () {
+  var char = hashToChar();
+  if (char) {
+    characterDetail(char);
+    document.getElementById('contents').scrollIntoView();
+  } else {
+    $('#contents').empty(); // back past the first character: plain list again
+    document.getElementById('container').scrollIntoView();
+  }
+});
+
+// the URL anchor holds the character, e.g. "#人" or "#%E4%BA%BA"
+function hashToChar () {
+  var h = location.hash.slice(1);
+  try { h = decodeURIComponent(h); } catch (e) {}
+  return h in lshk.dict ? h : null;
+}
 
 // lshk.dict contains Chinese characters mapped to their data, has 13051 items;
 // field [4] is the frequency (1 = most common, 8 = rarest)
@@ -62,14 +88,6 @@ function displayAllCharacters () {
   $('#characters button.up').on('click', function (){
     document.getElementById('container').scrollIntoView();
   });
-
-  $('#characters button:not(.up)').on('click', getid);
-}
-
-function getid (e) {
-  var $el = $(e.target);
-  characterDetail( $el.data('id') || $el.text()[0] );
-  document.getElementById('contents').scrollIntoView();
 }
 
 // show the entry (definition + example sentences) for one character
@@ -108,8 +126,6 @@ function characterDetail (e) {
       }
     });
   }
-  $('.v').on('click', getid);
-
   $('.c').on('click', function () {
     audio.playlist = $(this).text().split(/\s+/).map(function(char) {
       return char in lshk.mp3 ? char : '_chirp';
@@ -122,12 +138,14 @@ function characterDetail (e) {
 function createspan (trad, simp, simpMode, content){
   var char = simpMode ? simp || trad : trad;
   var data = char === trad ? '' : ' data-id="' + trad + '"'; // 不承认主义
-  var result = content === trad ? char : '<span class="v"' + data + '>' + char + '</span>';
+  // link to the traditional entry via the URL anchor
+  var result = content === trad ? char : '<a class="v" href="#' + encodeURIComponent(trad) + '"' + data + '>' + char + '</a>';
   return result;
 }
 
 function createbtn (trad, simp, simpMode){
   var char = simpMode ? simp || trad : trad;
   var data = char === trad ? '' : ' data-id="' + trad + '"'; // 不承认主义
-  return '<button' + data + '>' + char + '</button>';
+  // href always targets the traditional entry (the dictionary key)
+  return '<a href="#' + encodeURIComponent(trad) + '"' + data + '>' + char + '</a>';
 }
