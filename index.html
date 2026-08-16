@@ -23,63 +23,20 @@
     }
     button:focus { outline: none; }
 
-    #finals button {
-      background-color: lightblue; 
-      width: 100px;
-    }
-    #finals button.left {
-      background-color: lightgray;
-      font-size: 20px;
-      width: 40px;
-    }
-    #finals button.right {
-      background-color: lightgray;
-      font-size: 20px;
-      width: 40px;
-    }
-    #finals button.freq {
-      background-color: lightgray;
-      font-size: 22px;
-      width: 20px;
-    }
-    #finals button.simp {
-      background-color: #E0B0FF;
-     font-size: 24px;
-      width: 40px;
-    }
-    #finals button#fill {
-      visibility: hidden;
-      width: 60px;
-    }
-
-    #initials button        {background-color: lightgreen; width: 40px;}
-    #initials button#blue   {background-color: lightblue; cursor: default; width: 100px;}
-    #initials button.gray   {background-color: lightgray; cursor: default;}
-    #initials button.purple {background-color: #E0B0FF;   cursor: default;} 
-    #initials button.up     {background-color: lightgray;}
-
-    #homonyms button {
+    #characters button {
       background-color: white;
       border: 1px solid lightgray;
       font-size: 48px;
       width: 80px;
     }
-    #homonyms button#orange {
-      border: 1px solid white;
-      background-color: #ffd27f;
-      font-size: 24px;
-      width: 100px;
-      cursor: default;
-    }
-    #homonyms button.up {
+    #characters button.up {
       border: 1px solid white;
       background-color: lightgray;
       font-size: 24px;
       width: 40px;
     }
-    .invis  {visibility: hidden;} 
 
-    #contents, #homonyms {width: 90vw;}
+    #contents, #characters {width: 90vw;}
     #contents {padding-bottom: 50px;}
     #container{padding: 2px 2px;} /* border: 1px solid black; width: 926px;} */
 
@@ -105,9 +62,8 @@
      
 
       <div>
-        <div id="homonyms"></div>
+        <div id="characters"></div>
         <hr>
-        <div id="initials"></div>
 
         <div id="contents"></div>
         <button id="back-to-top" value="Back to Top">Back to Top</button>
